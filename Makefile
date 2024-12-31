@@ -22,8 +22,8 @@ os.iso: boot.bin kernel.bin
 boot.bin: boot.asm
     $(AS) -f bin -o boot.bin boot.asm
 
-kernel.bin: kernel_entry.o kernel.o shell.o gui.o
-    $(LD) $(LDFLAGS) -o kernel.bin kernel_entry.o kernel.o shell.o gui.o
+kernel.bin: kernel_entry.o kernel.o shell.o gui.o cursorsprite.o
+    $(LD) $(LDFLAGS) -o kernel.bin kernel_entry.o kernel.o shell.o gui.o cursorsprite.o
 
 kernel_entry.o: kernel_entry.asm
     $(AS) -f elf32 -o kernel_entry.o kernel_entry.asm
@@ -36,6 +36,9 @@ shell.o: shell.cpp
 
 gui.o: gui.cpp
     $(CXX) $(CXXFLAGS) -c gui.cpp -o gui.o
+
+cursorsprite.o: cursorsprite.cpp
+    $(CXX) $(CXXFLAGS) -c cursorsprite.cpp -o cursorsprite.o
 
 clean:
     rm -rf *.o *.bin iso os.iso
