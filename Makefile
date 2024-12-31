@@ -22,14 +22,17 @@ os.iso: boot.bin kernel.bin
 boot.bin: boot.asm
     $(AS) -f bin -o boot.bin boot.asm
 
-kernel.bin: kernel_entry.o kernel.o
-    $(LD) $(LDFLAGS) -o kernel.bin kernel_entry.o kernel.o
+kernel.bin: kernel_entry.o kernel.o shell.o
+    $(LD) $(LDFLAGS) -o kernel.bin kernel_entry.o kernel.o shell.o
 
 kernel_entry.o: kernel_entry.asm
     $(AS) -f elf32 -o kernel_entry.o kernel_entry.asm
 
 kernel.o: kernel.cpp
     $(CXX) $(CXXFLAGS) -c kernel.cpp -o kernel.o
+
+shell.o: shell.cpp
+    $(CXX) $(CXXFLAGS) -c shell.cpp -o shell.o
 
 clean:
     rm -rf *.o *.bin iso os.iso
